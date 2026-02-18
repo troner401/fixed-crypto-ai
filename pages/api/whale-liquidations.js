@@ -109,7 +109,7 @@ export default async function handler(req, res) {
     console.error('Whale liquidations API error:', err);
     return res.status(500).json({ 
       success: false,
-      error: String(err?.message || err) 
+      error: err?.message || 'Unknown error occurred' 
     });
   }
 }

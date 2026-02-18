@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useMemo } from "react";
 
 export default function NewsRadar({ items }) {
-  // Group items by source for better organization
-  const itemsWithPriority = items.map(item => ({
-    ...item,
-    priority: item.color === 'red' ? 1 : 2
-  })).sort((a, b) => a.priority - b.priority);
+  // Memoize sorted items to avoid recalculating on every render
+  const itemsWithPriority = useMemo(() => {
+    return items.map(item => ({
+      ...item,
+      priority: item.color === 'red' ? 1 : 2
+    })).sort((a, b) => a.priority - b.priority);
+  }, [items]);
 
   return (
     <div>

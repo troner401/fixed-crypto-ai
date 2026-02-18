@@ -235,7 +235,7 @@ export default function Liquidations({ history }) {
                   textAlign: 'center',
                   fontSize: '0.75rem'
                 }}>
-                  ${liq.price.toLocaleString()}
+                  ${(liq.price || 0).toLocaleString()}
                 </span>
                 
                 <span style={{

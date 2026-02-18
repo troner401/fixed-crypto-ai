@@ -40,7 +40,19 @@ export default function PolshiHub({ poly, kalshi }) {
     return { price, priceNum, vol, rawVol: volVal };
   };
 
-  // Arbitrage detection algorithm
+  /**
+   * Detects arbitrage opportunities between Polymarket and Kalshi
+   * @param {number|null} polyPrice - Polymarket price in cents (0-100)
+   * @param {number|null} kalshiPrice - Kalshi price in cents (0-100)
+   * @returns {Object|null} - Arbitrage details or null if no opportunity exists
+   * 
+   * Arbitrage logic:
+   * - Compares prices between platforms
+   * - Returns opportunity if spread > 5% threshold
+   * - Calculates discount percentage: ((sellPrice - buyPrice) / sellPrice) * 100
+   * - Calculates profit multiplier: sellPrice / buyPrice
+   * - Identifies which platform to buy from (lower price) and sell to (higher price)
+   */
   const detectArbitrage = (polyPrice, kalshiPrice) => {
     if (!polyPrice || !kalshiPrice) return null;
     

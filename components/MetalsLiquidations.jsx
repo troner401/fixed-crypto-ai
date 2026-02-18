@@ -5,6 +5,9 @@ export default function MetalsLiquidations({ history, whaleMovements }) {
     <div>
       <div className="card" style={{background:'#0f172a', border:'1px solid #fbbf24', marginBottom: 20}}>
         <h1 style={{padding:'0 20px', fontSize:'1.5rem', color:'#fbbf24'}}>🐋 Whale Movements (Gold & Silver)</h1>
+        <div style={{padding:'0 20px', fontSize:'0.75rem', color:'#64748b', marginBottom: 10}}>
+          ⚠️ Simulated data for demonstration purposes
+        </div>
         {whaleMovements.length === 0 ? (
           <p style={{padding:20, color:'#64748b'}}>Monitoring large precious metals trades...</p>
         ) : (
@@ -21,6 +24,9 @@ export default function MetalsLiquidations({ history, whaleMovements }) {
 
       <div className="card" style={{background:'#0f172a', border:'1px solid #ef4444'}}>
         <h1 style={{padding:'0 20px', fontSize:'1.5rem', color:'#ef4444'}}>⚡ Liquidation Feed (Gold & Silver)</h1>
+        <div style={{padding:'0 20px', fontSize:'0.75rem', color:'#64748b', marginBottom: 10}}>
+          ⚠️ Simulated data for demonstration purposes
+        </div>
         {history.length === 0 ? (
           <p style={{padding:20, color:'#64748b'}}>Listening for liquidations in precious metals markets...</p>
         ) : (

@@ -13,6 +13,8 @@ const KEYWORDS = ["bitcoin", "btc", "ethereum", "eth", "solana", "sol"];
 
 const METALS_FEEDS = ["https://www.kitco.com/rss/", "https://www.mining.com/feed/"];
 const METALS_KEYWORDS = ["gold", "silver", "xau", "xag", "precious metals", "bullion"];
+const HIGH_IMPORTANCE_METALS_KEYWORDS = ["gold", "silver", "xau", "xag"]; // Primary metals for importance detection
+const URGENCY_WORDS = ["surge", "crash", "record", "breaking", "alert", "major"];
 
 export default function Dashboard({ items, metalsItems }) {
   const [activeTab, setActiveTab] = useState("news");
@@ -205,16 +207,22 @@ export async function getServerSideProps() {
       const feed = await parser.parseURL(url);
       feed.items.forEach(i => {
         const title = i.title.toLowerCase();
-        // Check for high-importance keywords
-        const highImportance = METALS_KEYWORDS.slice(0, 4).some(k => title.includes(k)) && 
-                             (title.includes('surge') || title.includes('crash') || title.includes('record') || 
-                              title.includes('breaking') || title.includes('alert') || title.includes('major'));
+        // Check for high-importance: primary metals keywords + urgency words
+        const highImportance = HIGH_IMPORTANCE_METALS_KEYWORDS.some(k => title.includes(k)) && 
+                             URGENCY_WORDS.some(w => title.includes(w));
         
-        // Check for medium importance (contains keywords)
+        // Check for medium importance (contains any metals keywords)
         const mediumImportance = METALS_KEYWORDS.some(k => title.includes(k));
         
         const color = highImportance ? 'red' : mediumImportance ? 'blue' : 'gray';
-        const summary = i.contentSnippet ? i.contentSnippet.split('.').slice(0, 2).join('.') + '.' : "Read about this precious metals market movement.";
+        
+        // Better summary handling: limit by character count instead of sentence parsing
+        let summary = "Read about this precious metals market movement.";
+        if (i.contentSnippet) {
+          summary = i.contentSnippet.length > 200 
+            ? i.contentSnippet.substring(0, 200) + '...' 
+            : i.contentSnippet;
+        }
         
         metalsAll.push({ 
           id: i.link, 
